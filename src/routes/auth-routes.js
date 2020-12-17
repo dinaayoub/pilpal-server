@@ -3,10 +3,10 @@
 const express = require('express');
 const authRouter = express.Router();
 
-const User = require('./models/users.js');
-const basicAuth = require('./middleware/basic.js')
-const bearerAuth = require('./middleware/bearer.js')
-const permissions = require('./middleware/acl.js')
+const User = require('../models/users');
+const basicAuth = require('../middleware/basic')
+const bearerAuth = require('../middleware/bearer')
+const permissions = require('../middleware/acl')
 
 authRouter.post('/signup', async (req, res, next) => {
   try {
@@ -31,9 +31,14 @@ authRouter.post('/signin', basicAuth, (req, res, next) => {
 });
 
 authRouter.get('/users', bearerAuth, permissions('delete'), async (req, res, next) => {
-  const users = await User.find({});
-  const list = users.map(user => user.username);
-  res.status(200).json(list);
+  try {
+    const users = await User.find({});
+    const list = users.map(user => user.username);
+    res.status(200).json(list);
+  }
+  catch (error) {
+    res.status(500).send(error);
+  }
 });
 
 authRouter.get('/secret', bearerAuth, async (req, res, next) => {

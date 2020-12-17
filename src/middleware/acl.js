@@ -3,18 +3,19 @@
 module.exports = (capability) => {
 
   return (req, res, next) => {
-
     try {
       if (req.user.capabilities.includes(capability)) {
         next();
       }
       else {
-        next('Access Denied');
+        _authError();
       }
-    } catch (e) {
-      next('Invalid Login');
+    } catch (error) {
+      _authError();
     }
 
+    function _authError() {
+      res.status(403).send('Invalid Login');
+    }
   }
-
 }
