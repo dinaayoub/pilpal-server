@@ -1,0 +1,23 @@
+{
+  "name": "auth-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "lint": "eslint **/*.js",
+    "test": "jest --verbose --coverage",
+    "test-watch": "jest --watchAll --verbose --coverage"
+    },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dina-401-Advanced-Javascript/auth-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Dina-401-Advanced-Javascript/auth-api/issues"
+  },
+  "homepage": "https://github.com/Dina-401-Advanced-Javascript/auth-api#readme"
+}
