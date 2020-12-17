@@ -93,13 +93,12 @@ async function create() {
     catch (error) {
         console.error("You did not enter a message", error);
     }
-
 }
 
 async function read() {
     try {
         let url = "http://localhost:3000/api/v1/messages" + process.argv.length===4? "/process.argv[4]" : "";
-        let data = await superagent.get(url);
+        let data = await superagent.get(url); 
         data.body.forEach(entry => {
             console.log(entry);
         })
