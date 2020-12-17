@@ -64,6 +64,10 @@ V1 (Unauthenticated API) routes
 ## TO DO
 
 * create schema for messages
+  * username
+  * title
+  * message
+  * date/time
 * create command line interface that connects to API
   * any user can get all messages without logging in
   * when user signs up, we give them writer permissions & send them a token
