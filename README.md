@@ -58,5 +58,16 @@ V1 (Unauthenticated API) routes
 #### UML
 
 ![UML Diagram](assets/uml.png)
-
+![Updated UML Diagram](assets/uml-shared-message-board)
 ![WRRC Diagram](assets/wrrc.png)
+
+## TO DO
+
+* create schema for messages
+* create command line interface that connects to API
+  * any user can get all messages without logging in
+  * when user signs up, we give them writer permissions & send them a token
+  * user can authenticate with username/password
+  * user can create a message while authenticated with a token
+  * can create admin user (?)
+  * admin can create, update or delete a message with a token
