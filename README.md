@@ -25,10 +25,20 @@
 
 - POST /signup accepts a json body or a form with username and password fields and creates them in the db
 - POST /signin accepts a username and password in basic auth headers (url encoded password)
-- GET /users will list all the users given a valid login token
-- GET /secret will allow the user in with a valid login token
 
-NOTE: jwt tokens expire in 24 hours
+Unauthenticated:
+- POST /api/v1/food or /api/v1/clothes
+- GET /api/v1/food or /api/v1/clothes
+- GET /api/v1/food/\<id> or /api/v1/clothes/\<id>
+- PUT /api/v1/food/\<id> or /api/v1/clothes/\<id>
+- DELETE /api/v1/food/\<id> or /api/v1/clothes/\<id>
+
+Authenticated (send bearer auth token from /signup):
+- POST /api/v2/food or /api/v2/clothes
+- GET /api/v2/food or /api/v2/clothes
+- GET /api/v2/food/\<id> or /api/v2/clothes/\<id>
+- PUT /api/v2/food/\<id> or /api/v2/clothes/\<id>
+- DELETE /api/v2/food/\<id> or /api/v2/clothes/\<id>
 
 #### Tests
 
