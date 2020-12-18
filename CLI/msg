@@ -1,25 +1,58 @@
 #!/usr/bin/env node
 
+/*
+
+[dina]      [X] signup <username> <password>:                   used to create a new user
+[garrett]   [ ] signin <username> <password>:                   used to authenticate with the server
+            [ ] create <-t title (optional)> <message>:         used to create a new message
+            [ ] read:                                           used to retrieve all messages (authentication not required)
+            [ ] update <id> <-t title (optional)> <message>:    used to update a message (admin only)
+            [ ] delete <id>:                                    used to delete a message (admin only)
+[dina/src]  [X] help:                                           used to print the usage guide
+
+*/
 const superagent = require('superagent');
 
 console.log(process.argv)
 
-//const chalk = require('chalk');
+const chalk = require('chalk');
 const args = process.argv;
+const fs = require('fs');
+const base64 = require('base-64');
+
+var token = '';
+var user = '';
 
 switch (process.argv[2]) {
-    case "help":
-        help();
-        break;
-    case "signup":
-        signup();
-        break;
-    default: throw new Error()
+  case "help":
+    help();
+    break;
+  case "signup":
+    if (args.length !== 5) handleErrors('Incorrect number of arguments. Type ./msg help to see instructions.');
+    signup();
+    break;
+  case "signin":
+    signin();
+    break;
+  case "read":
+    if (args.length < 3 || args.length > 4) handleErrors('Incorrect number of arguments. Type ./msg help to see instructions.');
+    read();
+    break;
+  case "create":
+    create();
+    break;
+  case "delete":
+    del();
+    break;
+  default:
+    handleErrors();
+    break;
 };
+
 
 // presents the help guide to the user
 function help() {
-    const usageText = `
+  const usageText = `
         this msg app allows you to  helps you manage you todo tasks.
 
         usage:
@@ -36,35 +69,120 @@ function help() {
             help:                                           used to print the usage guide
     `
 
-    console.log(usageText)
+  console.log(usageText)
 }
 
 //usage: ./msg signup username password
 async function signup() {
-    try {
-        // we will save the token
-        // and confirm to the user on the CLI that we have logged them in
-        // or access denied.
-        let username = process.argv[3];
-        let password = process.argv[4];
-        let url = "http://localhost:3000/signup";
-        let data = await superagent.post(url).send({ username, password, role: 'writer' });
-        let token = data.body.token;
-        console.log(token);
-    }
-    catch (error) {
-        console.error("You didn't provide a valid username and password", error);
-    }
+  try {
+    //get the username and password from the arguments sent
+    let username = process.argv[3];
+    let password = process.argv[4];
+    let url = "http://localhost:3000/signup";
+    let data = await superagent.post(url).send({ username, password, role: 'admin' });
+    token = data.body.token;
+    console.log(token);
+    fs.writeFile('token.txt', token, function (err) {
+      if (err) throw err;
+    });
+    user = username;
+    console.log(user);
+  }
+  catch (error) {
+    handleErrors("Could not sign you up, please make sure you're following the help instructions", error);
+  }
 
+}
+async function signin() {
+  try {
+    let username = process.argv[3];
+    let password = process.argv[4];
+    let url = 'http://localhost:3000/signin';
+    let user = [username, password];
+    let encoded = base64.encode(username + ':' + password);
+    console.log(username);
+    let data = await superagent.post(url).set('Authorization', `Basic ${encoded}`);
+    let token = data.body.token;
+    fs.writeFile('token.txt', token, function (err) {
+      if (err) throw err;
+    });
+    console.log('signed in');
+  }
+  catch (error) {
+    handleErrors("Could not sign you up, please make sure you're following the help instructions", error);
+  }
+}
+
+async function create() {
+  try {
+    getToken()
+      .then(async (token) => {
+        console.log(token, 'token');
+        let title = process.argv[3]
+        let message = process.argv[4];
+        let url = "http://localhost:3000/api/v2/messages";
+        let data = await superagent.post(url).set('authorization', `Bearer ${token}`).send({ username: 'adminuse', title, message });
+        console.log(data.body);
+      });
+  }
+  catch (error) {
+    handleErrors("You did not enter a message", error);
+  }
+}
+
+async function read() {
+  try {
+    let url = "http://localhost:3000/api/v1/messages"; //+ process.argv.length===4? "/process.argv[4]" : "";
+    console.log(url);
+    let data = await superagent.get(url);
+    data.body.forEach(entry => {
+      console.log(entry);
+    })
+  }
+  catch (error) {
+    handleErrors('', error)
+  }
+}
+
+async function del() {
+  try {
+    getToken()
+      .then(async (token) => {
+        console.log(token, 'token');
+        let id = process.argv[3]
+        console.log(id);
+        let url = "http://localhost:3000/api/v2/messages/" + id;
+        let data = await superagent.delete(url).set('authorization', `Bearer ${token}`);
+        console.log(data.body);
+      })
+  }
+  catch (error) {
+    handleErrors("could not delete item", error)
+  }
 }
 // used to log errors to the console in red color
-function errorLog(error) {
-    const eLog = chalk.red(error)
+function handleErrors(message, error) {
+  console.log(message, error);
+  if (error) {
+    const eLog = chalk.red(error);
     console.log(eLog)
+  }
 }
 
+async function getToken() {
+  // var token;
+  return new Promise((resolve, reject) => {
+    fs.readFile('token.txt', function (err, data) {
+      console.log(data);
+      if (err) reject(err);
+      let token = Buffer.from(data).toString();
+      console.log(token, 'im a  token');
+      resolve(token);
+    });
+  });
+}
 // we make sure the length of the arguments is exactly three
 if (args.length > 6) {
-    errorLog(`only four arguments can be accepted`)
-    usage()
+  handleErrors(`Only four or fewer arguments can be accepted`);
+  help();
 }
