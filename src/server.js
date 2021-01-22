@@ -29,9 +29,9 @@ app.use('/api/v1', v1Routes);
 app.use('/api/v2', v2Routes);
 app.use(authRoutes);
 
-app.get('/',(req,res)=>{
-  res.status(200).send("hi there");
-})
+app.get('/', (req, res) => {
+  res.status(200).send('hi there');
+});
 
 // Catchalls
 app.use('*', notFoundHandler);
@@ -41,7 +41,7 @@ module.exports = {
   server: app,
   start: (port) => {
     app.listen(port, () => {
-      if (!port) { throw new Error("Missing Port"); }
+      if (!port) { throw new Error('Missing Port'); }
       console.log(`Server up on ${port}`);
     });
   },

@@ -13,6 +13,8 @@ const models = new Map();
 router.param('model', (req, res, next) => {
   try {
     const modelName = req.params.model;
+    console.log(modelName);
+    console.log(models);
     if (models.has(modelName)) {
       req.model = models.get(modelName);
       console.log(req.model);
@@ -27,7 +29,7 @@ router.param('model', (req, res, next) => {
         next();
       }
       else {
-        next("Invalid Model");
+        next('Invalid Model', models);
       }
     }
   } catch (error) {
@@ -57,7 +59,7 @@ async function handleGetAll(req, res) {
 async function handleGetOne(req, res) {
   try {
     const id = req.params.id;
-    let theRecord = await req.model.get(id)
+    let theRecord = await req.model.get(id);
     res.status(200).json(theRecord);
   }
   catch (error) {
@@ -84,7 +86,7 @@ async function handleUpdate(req, res) {
   try {
     const id = req.params.id;
     const obj = req.body;
-    let updatedRecord = await req.model.update(id, obj)
+    let updatedRecord = await req.model.update(id, obj);
     res.status(200).json(updatedRecord);
   }
   catch (error) {
