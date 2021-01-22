@@ -13,6 +13,8 @@ const models = new Map();
 router.param('model', (req, res, next) => {
   try {
     const modelName = req.params.model;
+    console.log(modelName);
+    console.log(models);
     if (models.has(modelName)) {
       req.model = models.get(modelName);
       console.log(req.model);
@@ -27,7 +29,7 @@ router.param('model', (req, res, next) => {
         next();
       }
       else {
-        next('Invalid Model');
+        next('Invalid Model', models);
       }
     }
   } catch (error) {
