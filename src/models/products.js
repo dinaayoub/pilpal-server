@@ -8,7 +8,7 @@ const toDoSchema = mongoose.Schema({
   description: { type: String },
   category: { type: String },
   price: { type: Number, required: true },
-  inStock: { type: Number, default: 0 }
+  quantity: { type: Number, default: 0 }
 });
 
 // 2. export this schema as a model
