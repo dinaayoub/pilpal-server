@@ -10,6 +10,6 @@ const triviaSchema = mongoose.Schema({
 });
 
 // 2. export this schema as a model
-const triviaModel = mongoose.model('potter', triviaSchema);
+const triviaModel = mongoose.model('trivia', triviaSchema);
 
 module.exports = triviaModel;
