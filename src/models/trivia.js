@@ -6,7 +6,8 @@ const mongoose = require('mongoose');
 const triviaSchema = mongoose.Schema({
   category: { type: String },
   answer: { type: String, required: true },
-  question: { type: String, required: true }
+  question: { type: String, required: true },
+  img: { type: String }
 });
 
 // 2. export this schema as a model
