@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken');
 const users = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  email: { type: String },
   role: { type: String, required: true, default: 'user', enum: ['user', 'writer', 'editor', 'admin'] },
 }, { toJSON: { virtuals: true } });
 // }, { toObject: { getters: true } }); // What would this do if we use this instead of just });
