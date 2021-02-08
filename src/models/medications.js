@@ -12,6 +12,6 @@ const medicationSchema = mongoose.Schema({
   notes: { type: String }
 });
 
-const messageModel = mongoose.model('medications', medicationSchema);
+const medicationsModel = mongoose.model('medications', medicationSchema);
 
-module.exports = messageModel;
+module.exports = medicationsModel;

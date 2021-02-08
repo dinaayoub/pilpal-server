@@ -10,6 +10,6 @@ const medicationHistorySchema = mongoose.Schema({
   notes: { type: String }
 });
 
-const messageModel = mongoose.model('medication_history', medicationHistorySchema);
+const medicationHistoryModel = mongoose.model('medication_history', medicationHistorySchema);
 
-module.exports = messageModel;
+module.exports = medicationHistoryModel;
