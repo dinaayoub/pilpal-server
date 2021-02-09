@@ -22,7 +22,7 @@ users.virtual('token').get(function () {
 
 users.virtual('capabilities').get(function () {
   let acl = {
-    user: ['read'],
+    user: ['read', 'create', 'update', 'delete'],
     writer: ['read', 'create'],
     editor: ['read', 'create', 'update'],
     admin: ['read', 'create', 'update', 'delete'],
