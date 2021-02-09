@@ -5,8 +5,9 @@ const mongoose = require('mongoose');
 const medicationHistorySchema = mongoose.Schema({
   medication_id: { type: String, required: true },
   user_id: { type: String, required: true },
+  name: { type: String },
   datetime: { type: Date },
-  notes: { type: String }
+  notes: { type: String },
 });
 
 const medicationHistoryModel = mongoose.model('medication_history', medicationHistorySchema);

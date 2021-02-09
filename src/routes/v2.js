@@ -40,6 +40,7 @@ router.param('model', (req, res, next) => {
 
 router.get('/:model', bearerAuth, handleGetAll);
 router.get('/:model/:id', bearerAuth, handleGetOne);
+router.get('/:model/user_id/:id', bearerAuth, handleGetByUserId);
 router.post('/:model', bearerAuth, acl('create'), handleCreate);
 router.put('/:model/:id', bearerAuth, acl('update'), handleUpdate);
 router.patch('/:model/:id', bearerAuth, acl('update'), handleUpdate);
@@ -60,6 +61,20 @@ async function handleGetOne(req, res) {
   try {
     const id = req.params.id;
     let theRecord = await req.model.get(id);
+    res.status(200).json(theRecord);
+  }
+  catch (error) {
+    res.status(404).send('Item not found: ' + error.message);
+    console.error('ERROR -----', error);
+
+  }
+}
+
+async function handleGetByUserId(req, res) {
+  console.log('I AM HEREEEE',req.params);
+  try {
+    const id = req.params.id;
+    let theRecord = await req.model.getByUserId(id);
     res.status(200).json(theRecord);
   }
   catch (error) {

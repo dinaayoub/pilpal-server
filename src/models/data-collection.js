@@ -19,6 +19,11 @@ class DataCollection {
     }
   }
 
+  getByUserId(user_id) {
+    console.log(user_id);
+    return this.model.find({ user_id }).exec();
+  }
+
   create(record) {
     let newRecord = new this.model(record);
     return newRecord.save();
