@@ -6,7 +6,8 @@ const medicationHistorySchema = mongoose.Schema({
   medication_id: { type: String, required: true },
   user_id: { type: String, required: true },
   name: { type: String },
-  datetime: { type: Date },
+  date: { type: String },
+  time_of_day: { type: String }, //this string can be = "Day, Afternoon, Evening, Night"
   notes: { type: String },
 });
 
