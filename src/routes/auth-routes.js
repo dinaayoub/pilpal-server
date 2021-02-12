@@ -18,7 +18,7 @@ authRouter.post('/signup', async (req, res, next) => {
     };
     res.status(201).json(output);
   } catch (e) {
-    next(e.message);
+    next(e, 'We are unable to sign-up a new user at this time');
   }
 });
 
